@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>PDF Directory - Ocean Bro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007AFF;
+            --bg-color: #F5F5F7;
+            --card-bg: #FFFFFF;
+            --text-color: #1D1D1F;
+            --secondary-text: #86868B;
+            --border-color: #D2D2D7;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+            --safe-area-inset-top: env(safe-area-inset-top);
+            --safe-area-inset-bottom: env(safe-area-inset-bottom);
+            --safe-area-inset-left: env(safe-area-inset-left);
+            --safe-area-inset-right: env(safe-area-inset-right);
+        }
+
+        .dark-mode {
+            --primary-color: #0A84FF;
+            --bg-color: #1D1D1F;
+            --card-bg: #2C2C2E;
+            --text-color: #F5F5F7;
+            --secondary-text: #AEAEB2;
+            --border-color: #3A3A3C;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: var(--safe-area-inset-top);
+            padding-bottom: var(--safe-area-inset-bottom);
+            padding-left: var(--safe-area-inset-left);
+            padding-right: var(--safe-area-inset-right);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding-top: calc(16px + var(--safe-area-inset-top));
+            padding-left: calc(20px + var(--safe-area-inset-left));
+            padding-right: calc(20px + var(--safe-area-inset-right));
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            height: 36px;
+            width: auto;
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 50%;
+            transition: var(--transition);
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover, .theme-toggle:focus {
+            background-color: rgba(0, 0, 0, 0.05);
+            outline: none;
+        }
+
+        .dark-mode .theme-toggle:hover, .dark-mode .theme-toggle:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .container {
+            flex: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 15px;
+            padding-bottom: 40px;
+        }
+
+        .search-container {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 14px 50px 14px 20px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            color: var(--text-color);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-text);
+            font-size: 1.1rem;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary-color);
+        }
+
+        .pdf-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .pdf-tile {
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            padding: 16px 12px;
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            aspect-ratio: 1;
+            border: 1px solid var(--border-color);
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        .pdf-tile:active {
+            transform: scale(0.98);
+        }
+
+        .pdf-tile:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .dark-mode .pdf-tile:hover {
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+        }
+
+        .pdf-tile i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #e74c3c;
+        }
+
+        .pdf-tile h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .pdf-tile p {
+            font-size: 0.7rem;
+            color: var(--secondary-text);
+            line-height: 1.3;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--secondary-text);
+            display: none;
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--secondary-text);
+        }
+
+        .no-results h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: var(--transition);
+            padding: 8px 0;
+        }
+
+        .back-button:hover {
+            gap: 12px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 18px;
+            color: var(--secondary-text);
+            font-size: 0.8rem;
+            margin-top: auto;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding-bottom: calc(18px + var(--safe-area-inset-bottom));
+        }
+
+        /* Desktop styles */
+        @media (min-width: 768px) {
+            header {
+                padding: 20px 40px;
+                padding-top: calc(20px + var(--safe-area-inset-top));
+            }
+
+            .container {
+                padding: 30px 25px;
+                padding-bottom: 60px;
+            }
+
+            .search-container {
+                margin-bottom: 30px;
+            }
+
+            .search-box {
+                padding: 16px 50px 16px 24px;
+                font-size: 1.1rem;
+            }
+
+            .pdf-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+
+            .pdf-tile {
+                aspect-ratio: 1.2;
+                padding: 24px 18px;
+                border-radius: 16px;
+            }
+
+            .pdf-tile i {
+                font-size: 2.5rem;
+                margin-bottom: 14px;
+            }
+
+            .pdf-tile h3 {
+                font-size: 1.1rem;
+            }
+
+            .pdf-tile p {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Large desktop styles */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .pdf-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Prevent horizontal scrolling */
+        @media (max-width: 767px) {
+            html, body {
+                overflow-x: hidden;
+            }
+            
+            body {
+                position: relative;
+            }
+        }
+
+        /* Improved focus styles for accessibility */
+        button:focus-visible, a:focus-visible, input:focus-visible {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* Loading state for better perceived performance */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <!-- Logo from repository -->
+            <img src="ocean.png" alt="Ocean Bro Logo" class="logo">
+            <h1>Ocean Bro</h1>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
+    </header>
+
+    <div class="container">
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Back to Main Menu
+        </a>
+
+        <h2 class="section-title">
+            <i class="fas fa-file-pdf"></i>
+            PDF Directory
+        </h2>
+
+        <!-- Search Box -->
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-box" placeholder="Search PDFs...">
+            <div class="search-icon">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+
+        <!-- PDF Grid -->
+        <div class="pdf-grid" id="pdfGrid">
+            <!-- Your actual PDF files -->
+            <div class="pdf-tile" data-title="IMPORTANT MGN for navigating" onclick="openPDF('IMPORTANT MGN for navigating .pdf')">
+                <i class="fas fa-file-pdf"></i>
+                <h3>IMPORTANT MGN for navigating</h3>
+                <p>Navigation MGN Document</p>
+            </div>
+
+            <div class="pdf-tile" data-title="Pdf2" onclick="openPDF('Chief Mate SQA Navigation Theory Notes.pdf')">
+                <i class="fas fa-file-pdf"></i>
+                <h3>Chief Mate SQA Navigation</h3>
+                <p>Navigation Theory Notes</p>
+            </div>
+
+            <div class="pdf-tile" data-title="Pdf3" onclick="openPDF('Navigation ALMANAC 2000.pdf')">
+                <i class="fas fa-file-pdf"></i>
+                <h3>ALMANAC 2000</h3>
+                <p>Navigation</p>
+            </div>
+
+            <div class="pdf-tile" data-title="Pdf4" onclick="openPDF('Pdf4.pdf')">
+                <i class="fas fa-file-pdf"></i>
+                <h3>Pdf4</h3>
+                <p>Fourth PDF Document</p>
+            </div>
+        </div>
+
+        <!-- No Results Message -->
+        <div class="no-results" id="noResults">
+            <i class="fas fa-search"></i>
+            <h3>No PDFs Found</h3>
+            <p>Try adjusting your search terms</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Ocean Bro UK Examinations &copy; 2026</p>
+    </footer>
+
+    <script>
+        // Enhanced theme toggle with error handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // Check for saved theme preference or use OS preference
+            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+            let currentTheme;
+            
+            try {
+                currentTheme = localStorage.getItem('theme');
+            } catch (e) {
+                console.warn('Could not access localStorage:', e);
+                currentTheme = null;
+            }
+            
+            // Apply theme based on preference
+            if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+                document.body.classList.add('dark-mode');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+            
+            // Theme toggle functionality
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                
+                try {
+                    if (document.body.classList.contains('dark-mode')) {
+                        localStorage.setItem('theme', 'dark');
+                        themeIcon.classList.remove('fa-moon');
+                        themeIcon.classList.add('fa-sun');
+                    } else {
+                        localStorage.setItem('theme', 'light');
+                        themeIcon.classList.remove('fa-sun');
+                        themeIcon.classList.add('fa-moon');
+                    }
+                } catch (e) {
+                    console.warn('Could not save theme preference:', e);
+                }
+            });
+            
+            // Listen for system theme changes
+            prefersDarkScheme.addEventListener('change', function(e) {
+                try {
+                    const currentTheme = localStorage.getItem('theme');
+                    // Only update if user hasn't set a preference
+                    if (!currentTheme) {
+                        if (e.matches) {
+                            document.body.classList.add('dark-mode');
+                            themeIcon.classList.remove('fa-moon');
+                            themeIcon.classList.add('fa-sun');
+                        } else {
+                            document.body.classList.remove('dark-mode');
+                            themeIcon.classList.remove('fa-sun');
+                            themeIcon.classList.add('fa-moon');
+                        }
+                    }
+                } catch (error) {
+                    console.warn('Could not respond to system theme change:', error);
+                }
+            });
+
+            // Initialize search functionality
+            initializeSearch();
+        });
+
+        // Open PDF files in browser
+        function openPDF(filename) {
+            // Add loading state
+            document.body.classList.add('loading');
+            
+            // Small delay to show loading state
+            setTimeout(() => {
+                try {
+                    // Open PDF in the same window/tab
+                    window.open(filename, '_self');
+                } catch (error) {
+                    console.error('Error opening PDF:', error);
+                    document.body.classList.remove('loading');
+                    alert('Unable to open the PDF file: ' + filename);
+                }
+            }, 150);
+        }
+
+        // Search functionality
+        function initializeSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const pdfTiles = document.querySelectorAll('.pdf-tile');
+            const noResults = document.getElementById('noResults');
+            const pdfGrid = document.getElementById('pdfGrid');
+
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                let visibleCount = 0;
+
+                pdfTiles.forEach(tile => {
+                    const title = tile.getAttribute('data-title').toLowerCase();
+                    
+                    if (title.includes(searchTerm) || searchTerm === '') {
+                        tile.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        tile.style.display = 'none';
+                    }
+                });
+
+                // Show/hide no results message
+                if (visibleCount === 0 && searchTerm !== '') {
+                    noResults.style.display = 'block';
+                    pdfGrid.style.display = 'none';
+                } else {
+                    noResults.style.display = 'none';
+                    pdfGrid.style.display = 'grid';
+                }
+            });
+
+            // Clear search on escape key
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    this.value = '';
+                    this.dispatchEvent(new Event('input'));
+                }
+            });
+        }
+
+        // Improved touch handling for mobile
+        document.addEventListener('touchstart', function() {}, { passive: true });
+
+        // Prevent zoom on double-tap (iOS)
+        document.addEventListener('touchend', function(e) {
+            if (e.touches && e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Handle resize events
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                // Force reflow on some elements to prevent rendering issues
+                document.body.style.overflow = 'hidden';
+                setTimeout(function() {
+                    document.body.style.overflow = '';
+                }, 50);
+            }, 250);
+        });
+
+        // Error boundary for unhandled errors
+        window.addEventListener('error', function(e) {
+            console.error('Unhandled error:', e.error);
+        });
+    </script>
+</body>
+</html>

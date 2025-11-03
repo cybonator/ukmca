@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocean Bro - UK Examinations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007AFF;
+            --bg-color: #F5F5F7;
+            --card-bg: #FFFFFF;
+            --text-color: #1D1D1F;
+            --secondary-text: #86868B;
+            --border-color: #D2D2D7;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --primary-color: #0A84FF;
+            --bg-color: #1D1D1F;
+            --card-bg: #2C2C2E;
+            --text-color: #F5F5F7;
+            --secondary-text: #AEAEB2;
+            --border-color: #3A3A3C;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+            padding-bottom: 40px;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 5%;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            height: 36px;
+            width: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            height: 100%;
+            width: auto;
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .dark-mode .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 5%;
+        }
+
+        .search-container {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 14px 20px;
+            padding-left: 45px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 16px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-text);
+        }
+
+        .grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .tile {
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .tile:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .dark-mode .tile:hover {
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+        }
+
+        .tile-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .tile-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+            color: var(--primary-color);
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .tile-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .tile-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            color: var(--secondary-text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .tile-content.expanded {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .tile-content p {
+            margin-bottom: 10px;
+        }
+
+        .tile-content ul {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .tile-content li {
+            margin-bottom: 5px;
+        }
+
+        .tile-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+        }
+
+        footer {
+            text-align: center;
+            padding: 18px;
+            color: var(--secondary-text);
+            font-size: 0.8rem;
+            margin-top: 40px;
+        }
+
+        /* Desktop styles */
+        @media (min-width: 768px) {
+            header {
+                padding: 20px 5%;
+            }
+
+            .container {
+                padding: 30px 5%;
+            }
+            
+            .tile {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo">
+                <img src="ocean.png" alt="Ocean Bro Logo">
+            </div>
+            <h1>UK Examinations</h1>
+        </div>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </header>
+
+    <div class="container">
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-box" id="searchBox" placeholder="Search questions by keyword...">
+        </div>
+
+        <div class="grid" id="questionsGrid">
+            <!-- MEDEVAC Question -->
+            <div class="tile" data-keywords="medical evacuation medevac ship shore helicopter rescue">
+                <div class="tile-header">
+                    <i class="fas fa-helicopter tile-icon"></i>
+                    <div>
+                        <h3 class="tile-title">What is Medical evacuation (MEDEVAC)?</h3>
+                    </div>
+                </div>
+                <div class="tile-content">
+                    <p>A MEDEVAC is the transfer of sick/injured crew from ship to shore (often by helicopter or rescue craft).</p>
+                    <p><strong>Procedures:</strong></p>
+                    <ul>
+                        <li>Master communicates with Maritime Rescue Coordination Centre (MRCC) under GMDSS.</li>
+                        <li>Provide medical report via Radio Medical Advice (MSN 1768 / <a href="https://assets.publishing.service.gov.uk/media/5a817ad840f0b62305b8f2de/MGN_331.pdf" target="_blank" style="color: rgb(70, 16, 194); text-decoration: underline; cursor: pointer;">MGN 331)</a>.</li>
+                        <li>Prepare casualty with stretcher/basket.</li>
+                        <li>Coordination through SAR authorities ensures safe evacuation.</li>
+                    </ul>
+                    <p><strong>Additional Information:</strong></p>
+                    <p>Medical evacuation, or MEDEVAC, is a critical procedure in maritime operations where a crew member requires urgent medical attention beyond what can be provided on board. The process involves coordination between the ship's master, maritime rescue authorities, and medical professionals on shore.</p>
+                    <p>Timely communication and proper preparation are essential for a successful MEDEVAC operation. The use of helicopters for evacuation requires specific safety protocols to be followed, including securing the landing area and ensuring the casualty is properly prepared for transfer.</p>
+                </div>
+                <div class="tile-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Ocean Bro - UK Examinations &copy; 2023 | For educational purposes only</p>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+
+        // Question Tile Expansion
+        const tiles = document.querySelectorAll('.tile');
+        
+        tiles.forEach(tile => {
+            const content = tile.querySelector('.tile-content');
+            
+            tile.addEventListener('click', () => {
+                // Close all other expanded tiles
+                tiles.forEach(otherTile => {
+                    if (otherTile !== tile) {
+                        otherTile.querySelector('.tile-content').classList.remove('expanded');
+                    }
+                });
+                
+                // Toggle current tile
+                content.classList.toggle('expanded');
+            });
+        });
+
+        // Search Functionality
+        const searchBox = document.getElementById('searchBox');
+        const questionsGrid = document.getElementById('questionsGrid');
+        
+        searchBox.addEventListener('input', () => {
+            const searchTerm = searchBox.value.toLowerCase();
+            const tiles = questionsGrid.querySelectorAll('.tile');
+            
+            tiles.forEach(tile => {
+                const keywords = tile.getAttribute('data-keywords').toLowerCase();
+                const title = tile.querySelector('.tile-title').textContent.toLowerCase();
+                
+                if (keywords.includes(searchTerm) || title.includes(searchTerm)) {
+                    tile.style.display = 'block';
+                } else {
+                    tile.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

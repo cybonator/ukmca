@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Ocean Bro - UK Examinations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007AFF;
+            --bg-color: #F5F5F7;
+            --card-bg: #FFFFFF;
+            --text-color: #1D1D1F;
+            --secondary-text: #86868B;
+            --border-color: #D2D2D7;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+            --safe-area-inset-top: env(safe-area-inset-top);
+            --safe-area-inset-bottom: env(safe-area-inset-bottom);
+            --safe-area-inset-left: env(safe-area-inset-left);
+            --safe-area-inset-right: env(safe-area-inset-right);
+        }
+
+        .dark-mode {
+            --primary-color: #0A84FF;
+            --bg-color: #1D1D1F;
+            --card-bg: #2C2C2E;
+            --text-color: #F5F5F7;
+            --secondary-text: #AEAEB2;
+            --border-color: #3A3A3C;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: var(--safe-area-inset-top);
+            padding-bottom: var(--safe-area-inset-bottom);
+            padding-left: var(--safe-area-inset-left);
+            padding-right: var(--safe-area-inset-right);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding-top: calc(16px + var(--safe-area-inset-top));
+            padding-left: calc(20px + var(--safe-area-inset-left));
+            padding-right: calc(20px + var(--safe-area-inset-right));
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            height: 36px;
+            width: auto;
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 50%;
+            transition: var(--transition);
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover, .theme-toggle:focus {
+            background-color: rgba(0, 0, 0, 0.05);
+            outline: none;
+        }
+
+        .dark-mode .theme-toggle:hover, .dark-mode .theme-toggle:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .container {
+            flex: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 15px;
+            padding-bottom: 100px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .tile {
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            padding: 16px 12px;
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            aspect-ratio: 1;
+            border: 1px solid var(--border-color);
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        .tile:active {
+            transform: scale(0.98);
+        }
+
+        .tile:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .dark-mode .tile:hover {
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+        }
+
+        .tile i {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .tile h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .tile p {
+            font-size: 0.75rem;
+            color: var(--secondary-text);
+            line-height: 1.3;
+        }
+
+        /* Buy/Sell Section */
+        .buy-sell-section {
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .buy-sell-section:active {
+            transform: scale(0.98);
+        }
+
+        .buy-sell-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .buy-sell-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .buy-sell-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .buy-sell-text h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .buy-sell-text p {
+            font-size: 0.75rem;
+            color: var(--secondary-text);
+        }
+
+        .buy-sell-arrow {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        /* Floating Notice Section */
+        .floating-notice {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            width: 56px;
+            height: 56px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 100;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            margin-bottom: var(--safe-area-inset-bottom);
+        }
+
+        .floating-notice:active {
+            transform: scale(0.95);
+        }
+
+        .floating-notice:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .floating-notice i {
+            font-size: 1.6rem;
+        }
+
+        .notice-panel {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            width: 280px;
+            max-height: 0;
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: all 0.4s ease;
+            z-index: 99;
+            border: 1px solid var(--border-color);
+            opacity: 0;
+            transform: translateY(10px);
+            margin-bottom: var(--safe-area-inset-bottom);
+        }
+
+        .notice-panel.expanded {
+            max-height: 360px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .notice-header {
+            padding: 14px 18px;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notice-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notice-header i {
+            font-size: 1.1rem;
+        }
+
+        .notice-content {
+            padding: 0 18px;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+
+        .notice-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .notice-item:last-child {
+            border-bottom: none;
+        }
+
+        .notice-date {
+            font-size: 0.75rem;
+            color: var(--secondary-text);
+            margin-bottom: 3px;
+        }
+
+        .notice-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+            font-size: 0.9rem;
+        }
+
+        .notice-text {
+            color: var(--secondary-text);
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .whatsapp-button {
+            position: fixed;
+            bottom: 24px;
+            right: 20px;
+            background-color: #25D366;
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 100;
+            animation: pulse 2s infinite;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            margin-bottom: var(--safe-area-inset-bottom);
+        }
+
+        .whatsapp-button:active {
+            transform: scale(0.95);
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .whatsapp-button i {
+            font-size: 1.6rem;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 18px;
+            color: var(--secondary-text);
+            font-size: 0.8rem;
+            margin-top: auto;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding-bottom: calc(18px + var(--safe-area-inset-bottom));
+        }
+
+        /* Desktop styles */
+        @media (min-width: 768px) {
+            header {
+                padding: 20px 40px;
+                padding-top: calc(20px + var(--safe-area-inset-top));
+            }
+
+            .container {
+                padding: 30px 25px;
+                padding-bottom: 100px;
+            }
+
+            .grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+            
+            .tile {
+                aspect-ratio: 1.2;
+                padding: 24px 18px;
+                border-radius: 16px;
+            }
+
+            .tile i {
+                font-size: 2.4rem;
+                margin-bottom: 14px;
+            }
+
+            .tile h3 {
+                font-size: 1.2rem;
+            }
+
+            .tile p {
+                font-size: 0.85rem;
+            }
+
+            .buy-sell-section {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            .buy-sell-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 1.4rem;
+            }
+
+            .buy-sell-text h3 {
+                font-size: 1.2rem;
+            }
+
+            .buy-sell-text p {
+                font-size: 0.9rem;
+            }
+
+            .floating-notice {
+                bottom: 100px;
+                left: 32px;
+                width: 60px;
+                height: 60px;
+            }
+
+            .floating-notice i {
+                font-size: 1.8rem;
+            }
+
+            .notice-panel {
+                bottom: 100px;
+                left: 32px;
+                width: 320px;
+            }
+
+            .whatsapp-button {
+                bottom: 32px;
+                right: 32px;
+                width: 60px;
+                height: 60px;
+            }
+            
+            .whatsapp-button i {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Large desktop styles */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            
+            .grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Prevent horizontal scrolling */
+        @media (max-width: 767px) {
+            html, body {
+                overflow-x: hidden;
+            }
+            
+            body {
+                position: relative;
+            }
+            
+            .notice-panel {
+                width: calc(100vw - 40px);
+                left: 20px;
+            }
+        }
+
+        /* Improved focus styles for accessibility */
+        button:focus-visible, a:focus-visible {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* Loading state for better perceived performance */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <!-- Logo from repository -->
+            <img src="ocean.png" alt="Ocean Bro Logo" class="logo">
+            <h1>Ocean Bro</h1>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
+    </header>
+
+    <div class="container">
+        <!-- Services Section -->
+        <div class="buy-sell-section" onclick="navigateTo('services.html')">
+            <div class="buy-sell-content">
+                <div class="buy-sell-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="buy-sell-text">
+                    <h3>Services</h3>
+                    <p>Services such as renting apartments, purchasing essential goods, and other misleading practices.</p>
+                </div>
+            </div>
+            <div class="buy-sell-arrow">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+
+        <!-- Main Tiles Grid -->
+        <div class="grid">
+            <div class="tile" onclick="navigateTo('immgn.html')">
+                <i class="fas fa-file-alt"></i>
+                <h3>Important MGNs</h3>
+                <p>Marine Guidance Notices</p>
+            </div>
+            <div class="tile" onclick="navigateTo('studymat.html')">
+                <i class="fas fa-book"></i>
+                <h3>Study Materials</h3>
+                <p>Resources for your exams</p>
+            </div>
+            <div class="tile" onclick="openExternalUrl('https://cybonator.github.io/Morsetrainer.github-io/')">
+                <i class="fas fa-signal"></i>
+                <h3>Morse Code Training</h3>
+                <p>Practice Morse code signals</p>
+            </div>
+            <div class="tile" onclick="navigateTo('navigation-theory.html')">
+                <i class="fas fa-compass"></i>
+                <h3>Navigation Theory</h3>
+                <p>Important theory questions</p>
+            </div>
+            <div class="tile" onclick="navigateTo('stability-theory.html')">
+                <i class="fas fa-balance-scale"></i>
+                <h3>Stability Theory</h3>
+                <p>Important theory questions</p>
+            </div>
+            <div class="tile" onclick="navigateTo('#')">
+                <i class="fas fa-question-circle"></i>
+                <h3>FAQ</h3>
+                <p>Frequently asked questions</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Notice Button -->
+    <div class="floating-notice" id="floatingNotice">
+        <i class="fas fa-bullhorn"></i>
+    </div>
+
+    <!-- Notice Panel -->
+    <div class="notice-panel" id="noticePanel">
+        <div class="notice-header">
+            <h3><i class="fas fa-bullhorn"></i> Notices</h3>
+            <i class="fas fa-times" id="closeNotice"></i>
+        </div>
+        <div class="notice-content">
+            <div class="notice-item">
+                <div class="notice-date">June 15, 2023</div>
+                <div class="notice-title">New MGNs Published</div>
+                <div class="notice-text">Check the Important MGNs section for the latest Marine Guidance Notices.</div>
+            </div>
+            <div class="notice-item">
+                <div class="notice-date">June 10, 2023</div>
+                <div class="notice-title">Exam Registration Open</div>
+                <div class="notice-text">Registration for the September examination session is now open.</div>
+            </div>
+            <div class="notice-item">
+                <div class="notice-date">May 28, 2023</div>
+                <div class="notice-title">Study Materials Updated</div>
+                <div class="notice-text">We've updated our study materials with the latest syllabus changes.</div>
+            </div>
+            <div class="notice-item">
+                <div class="notice-date">May 15, 2023</div>
+                <div class="notice-title">New Exam Center</div>
+                <div class="notice-text">We've opened a new examination center in London for your convenience.</div>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://wa.me/447887632496" class="whatsapp-button" target="_blank" aria-label="Contact via WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <footer>
+        <p>Ocean Bro UK Examinations &copy; 2026</p>
+    </footer>
+
+    <script>
+        // Enhanced theme toggle with error handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // Check for saved theme preference or use OS preference
+            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+            let currentTheme;
+            
+            try {
+                currentTheme = localStorage.getItem('theme');
+            } catch (e) {
+                console.warn('Could not access localStorage:', e);
+                currentTheme = null;
+            }
+            
+            // Apply theme based on preference
+            if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+                document.body.classList.add('dark-mode');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+            
+            // Theme toggle functionality
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                
+                try {
+                    if (document.body.classList.contains('dark-mode')) {
+                        localStorage.setItem('theme', 'dark');
+                        themeIcon.classList.remove('fa-moon');
+                        themeIcon.classList.add('fa-sun');
+                    } else {
+                        localStorage.setItem('theme', 'light');
+                        themeIcon.classList.remove('fa-sun');
+                        themeIcon.classList.add('fa-moon');
+                    }
+                } catch (e) {
+                    console.warn('Could not save theme preference:', e);
+                }
+            });
+            
+            // Listen for system theme changes
+            prefersDarkScheme.addEventListener('change', function(e) {
+                try {
+                    const currentTheme = localStorage.getItem('theme');
+                    // Only update if user hasn't set a preference
+                    if (!currentTheme) {
+                        if (e.matches) {
+                            document.body.classList.add('dark-mode');
+                            themeIcon.classList.remove('fa-moon');
+                            themeIcon.classList.add('fa-sun');
+                        } else {
+                            document.body.classList.remove('dark-mode');
+                            themeIcon.classList.remove('fa-sun');
+                            themeIcon.classList.add('fa-moon');
+                        }
+                    }
+                } catch (error) {
+                    console.warn('Could not respond to system theme change:', error);
+                }
+            });
+        });
+
+        // Enhanced navigation with loading state
+        function navigateTo(url) {
+            if (!url || url === '#') return;
+            
+            // Add loading state
+            document.body.classList.add('loading');
+            
+            // Small delay to show loading state
+            setTimeout(() => {
+                try {
+                    window.location.href = url;
+                } catch (error) {
+                    console.error('Navigation error:', error);
+                    document.body.classList.remove('loading');
+                    alert('Unable to navigate to the requested page.');
+                }
+            }, 150);
+        }
+
+        // Open external URLs in new tab
+        function openExternalUrl(url) {
+            if (!url) return;
+            
+            // Add loading state
+            document.body.classList.add('loading');
+            
+            // Small delay to show loading state
+            setTimeout(() => {
+                try {
+                    window.open(url, '_blank');
+                    document.body.classList.remove('loading');
+                } catch (error) {
+                    console.error('Error opening external URL:', error);
+                    document.body.classList.remove('loading');
+                    alert('Unable to open the external website.');
+                }
+            }, 150);
+        }
+
+        // Floating Notice Panel Functionality
+        const floatingNotice = document.getElementById('floatingNotice');
+        const noticePanel = document.getElementById('noticePanel');
+        const closeNotice = document.getElementById('closeNotice');
+        
+        floatingNotice.addEventListener('click', function() {
+            noticePanel.classList.toggle('expanded');
+        });
+        
+        closeNotice.addEventListener('click', function(e) {
+            e.stopPropagation();
+            noticePanel.classList.remove('expanded');
+        });
+        
+        // Close notice panel when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!noticePanel.contains(e.target) && !floatingNotice.contains(e.target)) {
+                noticePanel.classList.remove('expanded');
+            }
+        });
+
+        // Improved touch handling for mobile
+        document.addEventListener('touchstart', function() {}, { passive: true });
+
+        // Prevent zoom on double-tap (iOS)
+        document.addEventListener('touchend', function(e) {
+            if (e.touches && e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Handle resize events
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                // Force reflow on some elements to prevent rendering issues
+                document.body.style.overflow = 'hidden';
+                setTimeout(function() {
+                    document.body.style.overflow = '';
+                }, 50);
+            }, 250);
+        });
+
+        // Error boundary for unhandled errors
+        window.addEventListener('error', function(e) {
+            console.error('Unhandled error:', e.error);
+        });
+    </script>
+</body>
+</html>

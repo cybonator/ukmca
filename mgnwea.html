@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MGNs for Navigation - Ocean Bro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007AFF;
+            --bg-color: #F5F5F7;
+            --card-bg: #FFFFFF;
+            --text-color: #1D1D1F;
+            --secondary-text: #86868B;
+            --border-color: #D2D2D7;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --primary-color: #0A84FF;
+            --bg-color: #1D1D1F;
+            --card-bg: #2C2C2E;
+            --text-color: #F5F5F7;
+            --secondary-text: #AEAEB2;
+            --border-color: #3A3A3C;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+            padding-bottom: 80px;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .dark-mode .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 5%;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--secondary-text);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .mgn-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .mgn-item {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .mgn-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .mgn-header:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .dark-mode .mgn-header:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .mgn-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .mgn-icon {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .mgn-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .mgn-detail {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .mgn-detail::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .mgn-detail::-webkit-scrollbar-track {
+            background: var(--bg-color);
+            border-radius: 10px;
+        }
+
+        .mgn-detail::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+
+        .mgn-detail::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+            opacity: 0.8;
+        }
+
+        .mgn-detail p {
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .mgn-detail h2 {
+            margin: 20px 0 10px 0;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .mgn-detail ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .mgn-detail li {
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .weather-link {
+            background-color: rgba(0, 122, 255, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .weather-link strong {
+            color: var(--primary-color);
+        }
+
+        /* Expanded state */
+        .mgn-item.expanded .mgn-content {
+            max-height: 500px;
+        }
+
+        .mgn-item.expanded .mgn-icon {
+            transform: rotate(180deg);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .back-button:hover {
+            gap: 12px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+
+        @media (min-width: 768px) {
+            .mgn-grid {
+                gap: 25px;
+            }
+            
+            .mgn-header {
+                padding: 25px 30px;
+            }
+            
+            .mgn-detail {
+                padding: 25px 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mgn-header {
+                padding: 15px;
+            }
+            
+            .mgn-title {
+                font-size: 1.1rem;
+            }
+            
+            .mgn-detail {
+                padding: 15px;
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <!-- Logo from repository -->
+            <img src="ocean.png" alt="Ocean Bro Logo" class="logo">
+            <h1>Ocean Bro</h1>
+        </div>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </header>
+
+    <div class="container">
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Back to Main Menu
+        </a>
+        
+        <h1 class="page-title">MGNs for Navigation</h1>
+        <p class="page-subtitle">Marine Guidance Notices for Navigation Safety</p>
+
+        <div class="mgn-grid">
+            <!-- MGN 610 -->
+            <div class="mgn-item" id="mgn610">
+                <div class="mgn-header">
+                    <h2 class="mgn-title">MGN 610 (M+F) – SOLAS Chapter V – Safety of Navigation</h2>
+                    <i class="fas fa-chevron-down mgn-icon"></i>
+                </div>
+                <div class="mgn-content">
+                    <div class="mgn-detail">
+                        <p>Explains requirements for navigational equipment, voyage planning, and use of charts/publications.</p>
+                        <p>Basis for safe navigation under all conditions.</p>
+                        
+                        <h2>Important Publications</h2>
+                        <ul>
+                            <li>Admiralty Charts</li>
+                            <li>Admiralty Sailing Directions (Pilots)</li>
+                            <li>Admiralty List of Lights and Fog Signals</li>
+                            <li>Admiralty List of Radio Signals (Vols 1-6)</li>
+                            <li>Admiralty Tide Tables</li>
+                            <li>Tidal Stream Atlases</li>
+                            <li>Mariners Handbook (NP100)</li>
+                            <li>Ocean Passages for the World (NP136)</li>
+                            <li>Admiralty Distance Tables (NP350)</li>
+                            <li>International Code of Signals</li>
+                            <li>IAMSAR Manual Volume III</li>
+                            <li>Bridge Procedures Guide (ICS)</li>
+                            <li>COLREGS (International Regulations for Preventing Collisions at Sea)</li>
+                            <li>SOLAS (Consolidated Edition)</li>
+                            <li>MARPOL (Consolidated Edition)</li>
+                            <li>Load Line Convention</li>
+                            <li>Trim and Stability Booklet</li>
+                            <li>Damage Control Booklet</li>
+                            <li>Cargo Securing Manual</li>
+                            <li>ISM Code</li>
+                        </ul>
+                        
+                        <div class="weather-link">
+                            <strong>Weather link:</strong></strong><a href="https://assets.publishing.service.gov.uk/media/5e2efbc840f0b62c47c5466f/MGN_364_all_tagged.pdf" target="_blank" style="color: rgb(246, 13, 137); text-decoration: underline; cursor: pointer;"> stresses continuous monitoring and route adjustments during storms, fog, or restricted visibility.</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MGN 369 -->
+            <div class="mgn-item" id="mgn369">
+                <div class="mgn-header">
+                    <h2 class="mgn-title">MGN 369 (M+F) Amendment 1 – Navigation in Restricted Visibility</h2>
+                    <i class="fas fa-chevron-down mgn-icon"></i>
+                </div>
+                <div class="mgn-content">
+                    <div class="mgn-detail">
+                        <p>Reinforces COLREG Rule 19 and Rule 6 (Safe Speed).</p>
+                        <p>Procedures for radar use, sound signals, and maintaining lookout.</p>
+                        <h2>Definition of Restricted Visibility:</h2>
+                        <p>Visibility conditions where a vessel cannot be observed visually at a safe distance — caused by fog, mist, rain, or snow.</p> 
+                        <h2>Bridge Team Management:</h2>
+                        <ul><li>Master to be informed immediately when visibility begins to deteriorate.</li>
+                            <li>Extra lookouts posted; all unnecessary tasks suspended.</li>
+                            <li>Navigation lights switched on; sound signals as per Rule 35 (COLREGs) to be made.</li>
+                            <li>Maintain a proper radar and visual lookout at all times (per STCW A-VIII/2).</li>
+                        </ul>
+                        <h2>Use of Navigational Aids:</h2>
+                        <p>Radar and ARPA used in parallel with ECDIS; but MGN 369 stresses human oversight — over-reliance on electronic aids is unsafe.</p>
+Use parallel indexing and radar plotting to detect risk of collision early.
+ECDIS: confirm own ship’s position frequently with radar ranges/bearings and depth soundings.
+                          
+                         <h2>Safe Speed & Manoeuvring:</h2>
+                         <ul><li>Proceed at a safe speed suitable for visibility, traffic density, and stopping distance.</li>
+                             <Li>Engines placed on stand-by, ready for immediate manoeuvre.</Li>
+                             <Li>Rule 19(e): Avoid alteration of course to port for a vessel forward of the beam, unless overtaking.</Li>
+                        </ul>
+                         <h2>Sound & Light Signals:</h2>
+                         <p>Follow COLREGs Rule 35 — one prolonged blast at intervals not more than two minutes for a power-driven vessel making way.</p> 
+                        <h2>Record Keeping:</h2>
+                        <ul><li>Record all actions, radar observations, and changes in visibility in the deck logbook and bell book.</li>
+                            <Li>Entries must reflect compliance with Bridge Procedures Guide (ICS) and MGN 369.</Li>
+                        </ul>
+                        <div class="weather-link">
+                            <strong>Weather link:</strong><a href="https://assets.publishing.service.gov.uk/media/5e0f3178e5274a0f9d55cceb/MGN_369.pdf" target="_blank" style="color: rgb(246, 13, 137); text-decoration: underline; cursor: pointer;"> directly applicable in fog, rain, snow, dust, or poor visibility situations.</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MGN 324 -->
+            <div class="mgn-item" id="mgn324">
+                <div class="mgn-header">
+                    <h2 class="mgn-title">MGN 324 (M+F) – Use of Electronic Navigational Aids</h2>
+                    <i class="fas fa-chevron-down mgn-icon"></i>
+                </div>
+                <div class="mgn-content">
+                    <div class="mgn-detail">
+                        <p>Provides guidance on the correct use and integration of electronic navigational aids such as radar, ARPA, ECDIS, AIS, GPS, and echo sounders. It stresses that these systems are aids to navigation and not substitutes for a proper navigational watch.</p>
+                        <p>Avoids over-reliance on automation; supports bridge resource management.</p> 
+                        <h2>Key Guidance:</h2>
+                        <p><strong style="color: red;">Human Oversight:</strong> Officers must always maintain a proper visual and radar lookout; over-reliance on electronic aids can lead to accidents.</p>
+                        <p><strong style="color: red;">Cross-Checking:</strong> All position fixes and information from electronic systems must be cross-checked with independent methods (e.g. visual bearings, parallel indexing, or echo sounder readings).</p>
+                        <p><strong style="color: red;">System Understanding:</strong> Navigators must be fully trained and familiar with limitations, alarms, and set-up functions of each aid.</p>
+                        <p><strong style="color: red;">Integration:</strong> When using integrated bridge systems (IBS) or ECDIS, ensure inputs (e.g. GPS) are verified and any system errors (e.g. datum mismatches) are recognized.</p>
+                        <p><strong style="color: red;">Logging & Recording:</strong> Record system performance checks, mode changes, and malfunctions in the deck logbook.</p>
+                        <p><strong style="color: red;">Regulatory Link:</strong> Reinforces SOLAS V/19 – “Carriage requirements for navigational equipment” and STCW Reg VIII/2 on watchkeeping.</p>
+                        <h2>Conclusion:</h2>
+                        <p>MGN 324 emphasizes that safe navigation depends on competent human judgment supported by technology, not replaced by it.</p>    
+                        <div class="weather-link">
+                            <strong>Weather link:</strong><a href="https://assets.publishing.service.gov.uk/media/5a82433240f0b62305b9359d/Amendment_1_MGN_324__M_F__Watchkeeping_Safety_-_Use_of_VHF_Radio_and_AIS.pdf" target="_blank" style="color: rgb(246, 13, 137); text-decoration: underline; cursor: pointer;"> Poor visibility increases dependency on radar/ECDIS — bridge team coordination vital.</a> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        <!-- MGN 364 -->
+            <div class="mgn-item" id="mgn364">
+                <div class="mgn-header">
+                    <h2 class="mgn-title">MGN 364 (M+F) – Navigation: Traffic Separation Schemes -Application of Rule 10 and Navigation in the Dover Strait</h2>
+                    <i class="fas fa-chevron-down mgn-icon"></i>
+                </div>
+                <div class="mgn-content">
+                    <div class="mgn-detail">
+                        <p>MGN 364 (M+F) provides guidance on the mandatory reporting requirements for vessels navigating through the Dover Strait</p> 
+                        <p>one of the world’s busiest shipping lanes.</p>
+                        <p>It explains how ships must comply with the CALDOVREP reporting system, which was established under SOLAS Regulation V/11 and approved by the IMO (MSC.97(73)).</p>
+                        <h2>Reporting System Name:CALDOVREP – short for Calais–Dover Reporting System.</h2>
+                           <ul><h2>Area of Application:</h2>
+                               <li>All ships of 300 GT and above, and All vessels engaged in towing or pushing operations</li>
+                               <li>when transiting the Dover Strait Mandatory Reporting Area.</li>
+                               <li>Purpose of the System:</li>
+                               </li>To enhance navigational safety in congested waters.</li>
+                               </li>To assist in preventing collisions and groundings.</li>
+                               </li>To provide Maritime Rescue Coordination Centres (MRCCs) with updated vessel movement information.</li>
+                            </ul>   
+                         <h2>Reporting Authority:</h2>
+                             <p>Reports are sent to the Dover Coastguard (UK) or Gris-Nez Traffic (France), depending on direction. Operates jointly under Channel Navigation Information Service (CNIS).</p>
+                             <h2>When to Report:</h2>
+                               <ul><li>On entry into the reporting area.</li>
+                                  <li>Any change in navigational status (e.g. defect, incident, or pollution).</li>
+                                  <li>Final report on exit from the area.</li>
+                                  <li>Information to be Reported (Statutory details):</li>
+                                  <li>As per MGN 364 Annex and SOLAS V/11, report includes:</li>
+                                  <li>Ship’s name, call sign or IMO number</li>
+                                  <li>Position, course, speed</li>
+                                  <li>Destination and ETA</li>
+                                  <li>Hazardous cargo details (if any)</li>
+                                  <li>Defects or restrictions</li>
+                                  <li>Number of persons onboard</li>
+                                  </ul>
+
+                        <div class="weather-link">
+                            <strong>Weather link:</strong><a href="https://assets.publishing.service.gov.uk/media/5e2efbc840f0b62c47c5466f/MGN_364_all_tagged.pdf" target="_blank" style="color: rgb(246, 13, 137); text-decoration: underline; cursor: pointer;"> Traffic Separation Schemes – Application of Rule 10</a> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MGN 379 -->
+            <div class="mgn-item" id="mgn379">
+                <div class="mgn-header">
+                    <h2 class="mgn-title">MGN 379 (M+F) – Navigation: Passage Planning and Bridge Procedures</h2>
+                    <i class="fas fa-chevron-down mgn-icon"></i>
+                </div>
+                <div class="mgn-content">
+                    <div class="mgn-detail">
+                        <p>Details correct planning from berth-to-berth as per SOLAS V/34.</p>
+                        <div class="weather-link">
+                            <strong>Weather link:</strong><a href="" target="_blank" style="color: rgb(246, 13, 137); text-decoration: underline; cursor: pointer;"></a> passage plan must include heavy weather routing and contingency ports.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MGN 200 -->
+            <div class="mgn-item" id="mgn200">
+                <div class="mgn-header">
+                    <h2 class="mgn-title">MGN 200 (M+F) – Vessel Traffic Services (VTS)</h2>
+                    <i class="fas fa-chevron-down mgn-icon"></i>
+                </div>
+                <div class="mgn-content">
+                    <div class="mgn-detail">
+                        <p>Explains duties of Masters when entering VTS or mandatory reporting areas (e.g. Dover Strait).</p>
+                        <p>Vessel Traffic Services (VTS) are shore-based systems that range from the provision of simple information messages to ships, such as position of other traffic or meteorological hazard warnings, to extensive management of traffic within a port or waterway.</p>
+                        <p>Generally, ships entering a VTS area report to the authorities, usually by radio, and may be tracked by the VTS control center.</p>
+                        <p>The services provided by a VTS are especially relevant in times of high traffic density or when there is a presence of navigational hazards.</p>
+                        <p>In some areas, participation in a VTS is mandatory, particularly for larger vessels or vessels carrying hazardous cargoes.</p>
+                        <p>The master's duties include:</p>
+                        <ul>
+                            <li>Maintaining a continuous listening watch on the designated VTS frequency</li>
+                            <li>Reporting to the VTS center at designated positions</li>
+                            <li>Complying with VTS instructions unless to do so would endanger the vessel</li>
+                            <li>Reporting any defects or deficiencies that may affect the vessel's maneuverability</li>
+                            <li>Reporting any incidents or accidents within the VTS area</li>
+                        </ul>
+                        <div class="weather-link">
+                            <strong>Weather link:</strong><a href="" target="_blank" style="color: rgb(246, 13, 137); text-decoration: underline; cursor: pointer;"></a> poor visibility increases dependency on radar/ECDIS — bridge team coordination vital.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <footer>
+        <p>Ocean Bro UK Examinations &copy; 2026</p>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference or use OS preference
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme');
+        
+        if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+
+        // MGN Expand/Collapse Functionality
+        const mgnHeaders = document.querySelectorAll('.mgn-header');
+        
+        mgnHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                const mgnItem = this.parentElement;
+                mgnItem.classList.toggle('expanded');
+            });
+        });
+    </script>
+</body>
+</html>
